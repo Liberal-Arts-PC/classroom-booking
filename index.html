@@ -3,221 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจองห้องเรียน คณะศิลปศาสตร์ พื้นที่เพาะช่าง</title>
-    <!-- Tailwind CSS CDN -->
+    <title>ระบบจองห้องเรียน - คณะศิลปศาสตร์</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Alpine.js CDN -->
+    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- Google Fonts: Prompt -->
+    <!-- Google Font: Prompt -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Prompt', sans-serif;
-        }
+        body { font-family: 'Prompt', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col" x-data="classroomApp()">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col" x-data="classroomApp()">
 
     <!-- Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-slate-800 text-white p-2.5 rounded-xl shadow-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">ระบบจองห้องเรียน</h1>
-                    <p class="text-xs sm:text-sm text-slate-500 font-medium">คณะศิลปศาสตร์ พื้นที่เพาะช่าง | ภาคเรียนที่ 2/2569</p>
-                </div>
+    <header class="bg-indigo-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold flex items-center space-x-2">
+                    <span>📚 ระบบจองห้องเรียน คณะศิลปศาสตร์</span>
+                </h1>
+                <p class="text-xs sm:text-sm text-indigo-100">ภาคเรียนที่ 2/2569 (16 พ.ย. 69 - 5 มี.ค. 70)</p>
             </div>
             <div class="flex items-center space-x-2">
-                <button @click="exportCSV()" class="inline-flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-medium transition-colors shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button @click="exportCSV" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all flex items-center space-x-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    <span class="hidden sm:inline">ส่งออก CSV</span>
+                    <span>ส่งออกไป Google Sheets (CSV)</span>
                 </button>
-                <span class="bg-sky-50 text-sky-700 border border-sky-200 text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-xl">
-                    16 พ.ย. 69 - 5 มี.ค. 70
-                </span>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
         
-        <!-- Grid: Booking Form & Summary Info -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Form Section -->
-            <div class="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
-                <div>
-                    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- Booking Form -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
+                    <span class="bg-indigo-50 text-indigo-600 p-2 rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        <span>จองห้องเรียนชั่วคราว</span>
-                    </h2>
+                    </span>
+                    <span>จองห้องเรียนชั่วคราว</span>
+                </h2>
 
-                    <form @submit.prevent="submitBooking" class="space-y-4">
-                        <!-- Room Selection -->
+                <form @submit.prevent="submitBooking" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ห้องเรียน</label>
+                        <select x-model="form.room" @change="checkAvailability" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-indigo-500 font-medium">
+                            <option value="521">ห้อง 521</option>
+                            <option value="522">ห้อง 522</option>
+                            <option value="523">ห้อง 523</option>
+                            <option value="531">ห้อง 531</option>
+                            <option value="532">ห้อง 532</option>
+                            <option value="533">ห้อง 533</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">วันที่ต้องการใช้</label>
+                        <input type="date" x-model="form.date" @change="checkAvailability" min="2026-11-16" max="2027-03-05" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium" required>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">ห้องเรียน</label>
-                            <select x-model="form.room" @change="checkAvailability" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium">
-                                <option value="521">ห้อง 521</option>
-                                <option value="522">ห้อง 522</option>
-                                <option value="523">ห้อง 523</option>
-                                <option value="531">ห้อง 531</option>
-                                <option value="532">ห้อง 532</option>
-                                <option value="533">ห้อง 533</option>
-                            </select>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">เวลาเริ่ม (06:00 - 24:00)</label>
+                            <input type="time" x-model="form.startTime" @change="checkAvailability" min="06:00" max="24:00" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium" required>
                         </div>
-
-                        <!-- Date Selection -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">วันที่ต้องการใช้</label>
-                            <input type="date" x-model="form.date" @change="checkAvailability" min="2026-11-16" max="2027-03-05" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" required>
-                        </div>
-
-                        <!-- Time Slot -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">เวลาเริ่ม (06:00 - 24:00)</label>
-                                <input type="time" x-model="form.startTime" @change="checkAvailability" min="06:00" max="24:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" required>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">เวลาสิ้นสุด</label>
-                                <input type="time" x-model="form.endTime" @change="checkAvailability" min="06:00" max="24:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" required>
-                            </div>
-                        </div>
-
-                        <!-- Requester Name -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">ผู้จอง / อาจารย์ผู้สอน</label>
-                            <input type="text" x-model="form.requester" placeholder="เช่น อ.สมชาย หรือ นศ.สาขา..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" required>
-                        </div>
-
-                        <!-- Purpose -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">วัตถุประสงค์ / วิชา</label>
-                            <input type="text" x-model="form.title" placeholder="เช่น ประชุม, สอนเสริม, กิจกรรม" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" required>
-                        </div>
-
-                        <!-- Status Alert Box -->
-                        <div class="p-3 rounded-xl text-xs font-semibold flex items-center space-x-2" 
-                             :class="isAvailable ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'">
-                            <span class="w-2.5 h-2.5 rounded-full animate-pulse" :class="isAvailable ? 'bg-emerald-500' : 'bg-rose-500'"></span>
-                            <span x-text="availabilityMessage"></span>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" :disabled="!isAvailable" 
-                                class="w-full py-3 rounded-xl font-semibold text-sm text-white transition-all shadow-md"
-                                :class="isAvailable ? 'bg-slate-900 hover:bg-slate-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed'">
-                            ยืนยันการจองห้อง
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Calendar Filter & Schedule Table Preview -->
-            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
-                <div>
-                    <!-- Controls Header -->
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                        <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>ตารางการใช้ห้องเรียนประจำสัปดาห์</span>
-                        </h2>
-                        
-                        <div class="flex items-center space-x-2">
-                            <!-- Filter Room -->
-                            <select x-model="filterRoom" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
-                                <option value="ALL">ทุกห้องเรียน</option>
-                                <option value="521">ห้อง 521</option>
-                                <option value="522">ห้อง 522</option>
-                                <option value="523">ห้อง 523</option>
-                                <option value="531">ห้อง 531</option>
-                                <option value="532">ห้อง 532</option>
-                                <option value="533">ห้อง 533</option>
-                            </select>
-                            
-                            <!-- Filter Day -->
-                            <select x-model="filterDay" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
-                                <option value="ALL">ทุกวัน</option>
-                                <option value="Monday">วันจันทร์</option>
-                                <option value="Tuesday">วันอังคาร</option>
-                                <option value="Wednesday">วันพุธ</option>
-                                <option value="Thursday">วันพฤหัสบดี</option>
-                                <option value="Friday">วันศุกร์</option>
-                            </select>
+                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">เวลาสิ้นสุด</label>
+                            <input type="time" x-model="form.endTime" @change="checkAvailability" min="06:00" max="24:00" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium" required>
                         </div>
                     </div>
 
-                    <!-- Master Schedule List -->
-                    <div class="space-y-3 max-h-[450px] overflow-y-auto pr-2">
-                        <template x-for="(item, index) in filteredMasterSchedule" :key="index">
-                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 hover:bg-slate-100/50 transition-colors">
-                                <div class="flex items-start space-x-3">
-                                    <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-100 text-sky-800" x-text="'ห้อง ' + item.room"></span>
-                                    <div>
-                                        <div class="text-sm font-bold text-slate-900" x-text="item.subject"></div>
-                                        <div class="text-xs text-slate-500 font-medium" x-text="item.instructor + ' (' + item.group + ')'"></div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-3 text-xs font-semibold text-slate-600 self-end sm:self-center">
-                                    <span class="bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs" x-text="getDayThai(item.day)"></span>
-                                    <span class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg border border-indigo-100" x-text="item.time"></span>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ผู้จอง</label>
+                        <input type="text" x-model="form.requester" placeholder="ระบุชื่อผู้จอง / อาจารย์" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">วัตถุประสงค์ / วิชา</label>
+                        <input type="text" x-model="form.title" placeholder="ระบุวัตถุประสงค์การใช้ห้อง" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium" required>
+                    </div>
+
+                    <!-- Status Box -->
+                    <div class="p-3 rounded-xl text-xs font-semibold flex items-center space-x-2" 
+                         :class="isAvailable ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'">
+                        <span class="w-2.5 h-2.5 rounded-full" :class="isAvailable ? 'bg-emerald-500' : 'bg-rose-500'"></span>
+                        <span x-text="availabilityMessage"></span>
+                    </div>
+
+                    <button type="submit" :disabled="!isAvailable" 
+                            class="w-full py-3 rounded-xl font-semibold text-sm text-white transition-all shadow-md"
+                            :class="isAvailable ? 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'">
+                        ยืนยันการจองห้อง
+                    </button>
+                </form>
+            </div>
+
+            <!-- Master Schedule Display -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">ตารางสอนประจำสัปดาห์</h2>
+                    
+                    <div class="flex items-center space-x-2">
+                        <select x-model="filterRoom" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-semibold">
+                            <option value="ALL">ทุกห้องเรียน</option>
+                            <option value="521">ห้อง 521</option>
+                            <option value="522">ห้อง 522</option>
+                            <option value="523">ห้อง 523</option>
+                            <option value="531">ห้อง 531</option>
+                            <option value="532">ห้อง 532</option>
+                            <option value="533">ห้อง 533</option>
+                        </select>
+                        <select x-model="filterDay" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-semibold">
+                            <option value="ALL">ทุกวัน</option>
+                            <option value="Monday">วันจันทร์</option>
+                            <option value="Tuesday">วันอังคาร</option>
+                            <option value="Wednesday">วันพุธ</option>
+                            <option value="Thursday">วันพฤหัสบดี</option>
+                            <option value="Friday">วันศุกร์</option>
+                            <option value="Saturday">วันเสาร์</option>
+                            <option value="Sunday">วันอาทิตย์</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+                    <template x-for="(item, index) in filteredMasterSchedule" :key="index">
+                        <div class="bg-gray-50 border border-gray-200/60 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                            <div class="flex items-start space-x-3">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-800" x-text="'ห้อง ' + item.room"></span>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-900" x-text="item.subject"></div>
+                                    <div class="text-xs text-gray-500" x-text="item.instructor + ' (' + item.group + ')'"></div>
                                 </div>
                             </div>
-                        </template>
-                        <div x-show="filteredMasterSchedule.length === 0" class="text-center py-12 text-slate-400 text-sm">
-                            ไม่พบตารางเรียนในเงื่อนไขนี้
+                            <div class="flex items-center space-x-2 text-xs font-semibold self-end sm:self-center">
+                                <span class="bg-white px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600" x-text="getDayThai(item.day)"></span>
+                                <span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-lg border border-blue-100" x-text="item.time"></span>
+                            </div>
                         </div>
+                    </template>
+                    <div x-show="filteredMasterSchedule.length === 0" class="text-center py-12 text-gray-400 text-sm">
+                        ไม่พบตารางสอนในเงื่อนไขนี้
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Temporary Bookings Section -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center justify-between">
-                <span class="flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>รายการจองชั่วคราวที่ได้รับการยืนยันแล้ว</span>
-                </span>
+        <!-- Temporary Bookings Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center justify-between">
+                <span>รายการจองชั่วคราวที่ได้รับการยืนยันแล้ว</span>
                 <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-lg font-bold" x-text="tempBookings.length + ' รายการ'"></span>
             </h2>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="border-b border-slate-200 text-xs uppercase font-semibold text-slate-400 tracking-wider">
+                        <tr class="border-b border-gray-100 text-xs uppercase font-semibold text-gray-400">
                             <th class="py-3 px-4">ห้อง</th>
                             <th class="py-3 px-4">วันที่</th>
                             <th class="py-3 px-4">เวลา</th>
@@ -226,14 +177,14 @@
                             <th class="py-3 px-4 text-center">จัดการ</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 text-sm">
+                    <tbody class="divide-y divide-gray-50 text-sm">
                         <template x-for="(b, idx) in tempBookings" :key="b.id">
-                            <tr class="hover:bg-slate-50/50 transition-colors">
-                                <td class="py-3 px-4 font-bold text-slate-900" x-text="'ห้อง ' + b.room"></td>
-                                <td class="py-3 px-4 font-medium text-slate-600" x-text="b.date"></td>
-                                <td class="py-3 px-4 font-medium text-slate-600" x-text="b.startTime + ' - ' + b.endTime"></td>
-                                <td class="py-3 px-4 font-medium text-slate-800" x-text="b.requester"></td>
-                                <td class="py-3 px-4 text-slate-600" x-text="b.title"></td>
+                            <tr class="hover:bg-gray-50/50">
+                                <td class="py-3 px-4 font-bold text-gray-900" x-text="'ห้อง ' + b.room"></td>
+                                <td class="py-3 px-4 text-gray-600" x-text="b.date"></td>
+                                <td class="py-3 px-4 text-gray-600" x-text="b.startTime + ' - ' + b.endTime"></td>
+                                <td class="py-3 px-4 font-medium text-gray-800" x-text="b.requester"></td>
+                                <td class="py-3 px-4 text-gray-600" x-text="b.title"></td>
                                 <td class="py-3 px-4 text-center">
                                     <button @click="openDeleteModal(b)" class="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -244,7 +195,7 @@
                             </tr>
                         </template>
                         <tr x-show="tempBookings.length === 0">
-                            <td colspan="6" class="text-center py-8 text-slate-400 text-sm">ยังไม่มีรายการจองชั่วคราวในระบบ</td>
+                            <td colspan="6" class="text-center py-8 text-gray-400 text-sm">ยังไม่มีรายการจองชั่วคราวในระบบ</td>
                         </tr>
                     </tbody>
                 </table>
@@ -254,40 +205,40 @@
     </main>
 
     <!-- Delete Confirmation Modal -->
-    <div x-show="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4" x-cloak>
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 border border-slate-100" @click.outside="showDeleteModal = false">
+    <div x-show="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-xs p-4" x-cloak>
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4" @click.outside="showDeleteModal = false">
             <div class="flex items-center space-x-3 text-rose-600">
                 <div class="bg-rose-50 p-3 rounded-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900">ยืนยันการลบรายการจอง</h3>
+                <h3 class="text-lg font-bold text-gray-900">ยืนยันการลบรายการจอง</h3>
             </div>
             
-            <p class="text-sm text-slate-600">คุณต้องการลบรายการจองนี้ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้</p>
+            <p class="text-sm text-gray-600">คุณต้องการลบรายการจองนี้ใช่หรือไม่?</p>
             
-            <div class="bg-slate-50 rounded-xl p-3.5 space-y-1.5 text-xs font-medium text-slate-700 border border-slate-200">
-                <div><span class="text-slate-400">ห้อง:</span> <span class="font-bold text-slate-900" x-text="'ห้อง ' + (selectedBookingToDelete?.room || '')"></span></div>
-                <div><span class="text-slate-400">วันที่:</span> <span x-text="selectedBookingToDelete?.date"></span></div>
-                <div><span class="text-slate-400">เวลา:</span> <span x-text="(selectedBookingToDelete?.startTime || '') + ' - ' + (selectedBookingToDelete?.endTime || '')"></span></div>
-                <div><span class="text-slate-400">ผู้จอง:</span> <span x-text="selectedBookingToDelete?.requester"></span></div>
-                <div><span class="text-slate-400">วัตถุประสงค์:</span> <span x-text="selectedBookingToDelete?.title"></span></div>
+            <div class="bg-gray-50 rounded-xl p-3.5 space-y-1.5 text-xs font-medium text-gray-700 border border-gray-200">
+                <div><span class="text-gray-400">ห้อง:</span> <span class="font-bold text-gray-900" x-text="'ห้อง ' + (selectedBookingToDelete?.room || '')"></span></div>
+                <div><span class="text-gray-400">วันที่:</span> <span x-text="selectedBookingToDelete?.date"></span></div>
+                <div><span class="text-gray-400">เวลา:</span> <span x-text="(selectedBookingToDelete?.startTime || '') + ' - ' + (selectedBookingToDelete?.endTime || '')"></span></div>
+                <div><span class="text-gray-400">ผู้จอง:</span> <span x-text="selectedBookingToDelete?.requester"></span></div>
+                <div><span class="text-gray-400">วัตถุประสงค์:</span> <span x-text="selectedBookingToDelete?.title"></span></div>
             </div>
 
             <div class="flex items-center justify-end space-x-3 pt-2">
-                <button @click="showDeleteModal = false" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-colors">ยกเลิก</button>
-                <button @click="confirmDelete()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white transition-colors shadow-sm">ลบข้อมูล</button>
+                <button @click="showDeleteModal = false" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">ยกเลิก</button>
+                <button @click="confirmDelete" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm">ลบข้อมูล</button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 mt-auto">
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-400 mt-auto">
         ระบบบริหารจัดการห้องเรียน คณะศิลปศาสตร์ พื้นที่เพาะช่าง &copy; 2026
     </footer>
 
-    <!-- Alpine.js Application Script -->
+    <!-- Script Logic -->
     <script>
         function classroomApp() {
             return {
@@ -306,75 +257,73 @@
                 showDeleteModal: false,
                 selectedBookingToDelete: null,
                 
-                // Master Schedule Data Hardcoded
                 masterSchedule: [
                     // วันจันทร์
                     { day: 'Monday', room: '521', time: '09.30 - 12.30 น.', subject: 'วิชา SOC 2006 อาเซียนศึกษา', instructor: 'อ.มณรดา', group: 'อบ.ภายใน.3' },
                     { day: 'Monday', room: '521', time: '13.30 - 16.30 น.', subject: 'วิชา วิทยศิลปะ', instructor: 'อ.มนตรี', group: 'โลหะ.1' },
                     { day: 'Monday', room: '522', time: '08.30 - 11.30 น.', subject: 'วิชา HUM 1016 เทคนิคการพัฒนาบุคลิกภาพ', instructor: 'อ.กัลยา', group: 'อบ.ภายใน.4' },
-                    { day: 'Monday', room: '522', time: '13.30 - 16.30 น.', subject: 'วิชา GES 1029 พลวัตทางสังคมและวัฒนธรรมไทยร่วมสมัย', instructor: 'อ.มณรดา', group: 'จท.2' },
-                    { day: 'Monday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.จินตนา', group: 'โลหะ.2+ป.ไทย.2' },
-                    { day: 'Monday', room: '523', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.กิตติพง', group: 'เซรามิกส์.1' },
+                    { day: 'Monday', room: '522', time: '13.30 - 16.30 น.', subject: 'วิชา GES 1029 พลวัตทางสังคมฯ', instructor: 'อ.มณรดา', group: 'จท.2' },
+                    { day: 'Monday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.จินตนา', group: 'โลหะ.2' },
+                    { day: 'Monday', room: '523', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสาร', instructor: 'อ.กิตติพง', group: 'เซรามิกส์.1' },
                     { day: 'Monday', room: '531', time: '09.30 - 12.30 น.', subject: 'วิชา วิทยในชีวิตประจำวัน', instructor: 'อ.มนตรี', group: 'หศ.1' },
-                    { day: 'Monday', room: '531', time: '13.30 - 16.30 น.', subject: 'วิชา GES 1005 การเขียนรายงานและสารสนเทศ', instructor: 'อ.กัลยา', group: 'นิเทศ.1' },
-                    { day: 'Monday', room: '532', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเพื่อการพูดและการเขียนเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'ผภ.2' },
-                    { day: 'Monday', room: '532', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเพื่อการพูดและการเขียนเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'ศป.2' },
-                    { day: 'Monday', room: '533', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.อภินันท์', group: 'เซรามิกส์.1' },
-                    { day: 'Monday', room: '533', time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.อภินันท์', group: 'ถภ.2' },
+                    { day: 'Monday', room: '531', time: '13.30 - 16.30 น.', subject: 'วิชา GES 1005 การเขียนรายงาน', instructor: 'อ.กัลยา', group: 'นิเทศ.1' },
+                    { day: 'Monday', room: '532', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'ผภ.2' },
+                    { day: 'Monday', room: '532', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'ศป.2' },
+                    { day: 'Monday', room: '533', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.อภินันท์', group: 'เซรามิกส์.1' },
+                    { day: 'Monday', room: '533', time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์', group: 'ถภ.2' },
                     
                     // วันอังคาร
-                    { day: 'Tuesday', room: '521', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.อภินันท์', group: 'เซรามิกส์.2' },
+                    { day: 'Tuesday', room: '521', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์', group: 'เซรามิกส์.2' },
                     { day: 'Tuesday', room: '521', time: '13.30 - 16.30 น.', subject: 'วิชา มนุษยกายภาพ', instructor: 'อ.มนตรี', group: 'ออกแบบ.2' },
-                    { day: 'Tuesday', room: '522', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.กานต์รวี', group: 'โลหะ.1' },
-                    { day: 'Tuesday', room: '522', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.กานต์รวี', group: 'ปท.2' },
-                    { day: 'Tuesday', room: '523', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเพื่อการพูดและการเขียนเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'หศ.2' },
+                    { day: 'Tuesday', room: '522', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสาร', instructor: 'อ.กานต์รวี', group: 'โลหะ.1' },
+                    { day: 'Tuesday', room: '522', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสาร', instructor: 'อ.กานต์รวี', group: 'ปท.2' },
+                    { day: 'Tuesday', room: '523', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'หศ.2' },
                     { day: 'Tuesday', room: '523', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1015 วรรณคดีศึกษา', instructor: 'อ.เครือหวาย', group: 'หศ.3' },
-                    { day: 'Tuesday', room: '531', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.จินตนา', group: 'ผภ.2' },
-                    { day: 'Tuesday', room: '532', time: '09.30 - 12.30 น.', subject: 'วิชา GES 1029 พลวัตทางสังคมและวัฒนธรรมไทยร่วมสมัย', instructor: 'อ.มณรดา', group: 'ศป.3' },
-                    { day: 'Tuesday', room: '532', time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเพื่อการพูดและการเขียนเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'นิเทศ.2' },
-                    { day: 'Tuesday', room: '533', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.รมนปวีร์', group: 'หศ.2' },
+                    { day: 'Tuesday', room: '531', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.จินตนา', group: 'ผภ.2' },
+                    { day: 'Tuesday', room: '532', time: '09.30 - 12.30 น.', subject: 'วิชา GES 1029 พลวัตทางสังคมฯ', instructor: 'อ.มณรดา', group: 'ศป.3' },
+                    { day: 'Tuesday', room: '532', time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'นิเทศ.2' },
+                    { day: 'Tuesday', room: '533', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'หศ.2' },
                     { day: 'Tuesday', room: '533', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1001 ภาษาอังกฤษทั่วไป', instructor: 'อ.รมนปวีร์', group: 'อน.1' },
 
                     // วันพุธ
-                    { day: 'Wednesday', room: '521', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.อภินันท์', group: 'ถภ.1' },
+                    { day: 'Wednesday', room: '521', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.อภินันท์', group: 'ถภ.1' },
                     { day: 'Wednesday', room: '521', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '521', time: '17.30 - 19.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.รมนปวีร์', group: 'ถภ.1' },
+                    { day: 'Wednesday', room: '521', time: '17.30 - 19.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'ถภ.1' },
                     { day: 'Wednesday', room: '522', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '522', time: '17.30 - 20.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษเพื่อการสื่อสารในยุคดิจิทัล', instructor: 'อ.อภินันท์', group: 'ถภ.2 สมทบ' },
-                    { day: 'Wednesday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GES 1005 การเขียนรายงานและสารสนเทศ', instructor: 'อ.กัลยา', group: 'ผภ.2' },
+                    { day: 'Wednesday', room: '522', time: '17.30 - 20.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์', group: 'ถภ.2 สมทบ' },
+                    { day: 'Wednesday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GES 1005 การเขียนรายงาน', instructor: 'อ.กัลยา', group: 'ผภ.2' },
                     { day: 'Wednesday', room: '523', time: '13.30 - 15.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา', group: 'ถภ.2' },
                     { day: 'Wednesday', room: '523', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
                     { day: 'Wednesday', room: '523', time: '17.30 - 18.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา', group: 'ถภ.2' },
-                    { day: 'Wednesday', room: '531', time: '12.30 - 15.30 น.', subject: 'วิชา GES 1008 การพัฒนาบุคลิกภาพเพื่อการทำงานและอาชีพ', instructor: 'อ.กัลยา', group: 'ศป.2' },
+                    { day: 'Wednesday', room: '531', time: '12.30 - 15.30 น.', subject: 'วิชา GES 1008 พัฒนาบุคลิกภาพ', instructor: 'อ.กัลยา', group: 'ศป.2' },
                     { day: 'Wednesday', room: '531', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '531', time: '17.30 - 18.30 น.', subject: 'วิชา GES 1005 การเขียนรายงานและสารสนเทศ', instructor: 'อ.กัลยา', group: 'นิเทศ.1' },
+                    { day: 'Wednesday', room: '531', time: '17.30 - 18.30 น.', subject: 'วิชา GES 1005 การเขียนรายงาน', instructor: 'อ.กัลยา', group: 'นิเทศ.1' },
                     { day: 'Wednesday', room: '532', time: '13.30 - 15.30 น.', subject: 'วิชา สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ', group: 'ถภ.2' },
                     { day: 'Wednesday', room: '532', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
                     { day: 'Wednesday', room: '532', time: '17.30 - 21.30 น.', subject: 'วิชา สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ', group: 'ถภ.2' },
                     { day: 'Wednesday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษเพื่อการสื่อสาร', instructor: 'ดร.สาธิตา', group: 'หก.2' },
-                    { day: 'Wednesday', room: '533', time: '12.30 - 15.30 น.', subject: 'วิชา EDU 1103 ภาษาอังกฤษเพื่อการสื่อสารสำหรับวิชาชีพครู', instructor: 'ดร.สาธิตา', group: 'ศป.1' },
+                    { day: 'Wednesday', room: '533', time: '12.30 - 15.30 น.', subject: 'วิชา EDU 1103 ภาษาอังกฤษวิชาชีพครู', instructor: 'ดร.สาธิตา', group: 'ศป.1' },
                     { day: 'Wednesday', room: '533', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
 
                     // วันพฤหัสบดี
-                    { day: 'Thursday', room: '522', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1017 ภาษาไทยกับศิลปะการนำเสนองาน', instructor: 'อ.เครือหวาย', group: 'ศป.3' },
-                    { day: 'Thursday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GES 1007 จิตวิทยาองค์การสำหรับผู้ประกอบการ', instructor: 'อ.กัลยา', group: 'หก.2' },
-                    { day: 'Thursday', room: '523', time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเพื่อการพูดและการเขียนเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'นิเทศ.2 สมทบ' },
-                    { day: 'Thursday', room: '531', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.จินตนา', group: 'ภพ.1+ปก.1' },
-                    { day: 'Thursday', room: '531', time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1009 ภาษาอังกฤษสำหรับการสอบวัดมาตรฐาน', instructor: 'อ.จินตนา', group: 'ปก.2+ภพ.2' },
+                    { day: 'Thursday', room: '522', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1017 ภาษาไทยกับศิลปะการนำเสนอ', instructor: 'อ.เครือหวาย', group: 'ศป.3' },
+                    { day: 'Thursday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GES 1007 จิตวิทยาองค์การ', instructor: 'อ.กัลยา', group: 'หก.2' },
+                    { day: 'Thursday', room: '523', time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'นิเทศ.2 สมทบ' },
+                    { day: 'Thursday', room: '531', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.จินตนา', group: 'ภพ.1+ปก.1' },
+                    { day: 'Thursday', room: '531', time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1009 ภาษาอังกฤษสอบวัดมาตรฐาน', instructor: 'อ.จินตนา', group: 'ปก.2+ภพ.2' },
                     { day: 'Thursday', room: '532', time: '09.30 - 12.30 น.', subject: 'วิชา สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ', group: 'หก.2' },
-                    { day: 'Thursday', room: '532', time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1008 ภาษาอังกฤษเพื่อการนำเสนองานอย่างทันสมัย', instructor: 'อ.รมนปวีร์', group: 'ปก.2+ภพ.2' },
-                    { day: 'Thursday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.รมนปวีร์', group: 'จก.1' },
+                    { day: 'Thursday', room: '532', time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1008 ภาษาอังกฤษนำเสนองาน', instructor: 'อ.รมนปวีร์', group: 'ปก.2+ภพ.2' },
+                    { day: 'Thursday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'จก.1' },
 
                     // วันศุกร์
                     { day: 'Friday', room: '521', time: '20.30 - 21.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์', group: 'ถภ.1' },
-                    { day: 'Friday', room: '523', time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.รมนปวีร์', group: 'นิเทศ.1 สมทบ' },
-                    { day: 'Friday', room: '532', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.รมนปวีร์', group: 'จท.1' },
-                    { day: 'Friday', room: '532', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'ดร.สาธิตา', group: 'ผภ.1' },
-                    { day: 'Friday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1004 การสนทนาภาษาอังกฤษในบริบทสากล', instructor: 'อ.จินตนา', group: 'โลหะ.2+อน.2' },
-                    { day: 'Friday', room: '533', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพในศตวรรษที่ 21', instructor: 'อ.รมนปวีร์', group: 'นิเทศ.1' }
+                    { day: 'Friday', room: '523', time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'นิเทศ.1 สมทบ' },
+                    { day: 'Friday', room: '532', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'จท.1' },
+                    { day: 'Friday', room: '532', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'ดร.สาธิตา', group: 'ผภ.1' },
+                    { day: 'Friday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1004 สนทนาภาษาอังกฤษสากล', instructor: 'อ.จินตนา', group: 'โลหะ.2' },
+                    { day: 'Friday', room: '533', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'นิเทศ.1' }
                 ],
 
-                // Temporary Bookings Storage
                 tempBookings: JSON.parse(localStorage.getItem('tempBookings') || '[]'),
 
                 get filteredMasterSchedule() {
@@ -394,13 +343,8 @@
 
                 getDayThai(dayEn) {
                     const map = {
-                        'Monday': 'วันจันทร์',
-                        'Tuesday': 'วันอังคาร',
-                        'Wednesday': 'วันพุธ',
-                        'Thursday': 'วันพฤหัสบดี',
-                        'Friday': 'วันศุกร์',
-                        'Saturday': 'วันเสาร์',
-                        'Sunday': 'วันอาทิตย์'
+                        'Monday': 'วันจันทร์', 'Tuesday': 'วันอังคาร', 'Wednesday': 'วันพุธ',
+                        'Thursday': 'วันพฤหัสบดี', 'Friday': 'วันศุกร์', 'Saturday': 'วันเสาร์', 'Sunday': 'วันอาทิตย์'
                     };
                     return map[dayEn] || dayEn;
                 },
@@ -408,7 +352,7 @@
                 checkAvailability() {
                     if (!this.form.date || !this.form.startTime || !this.form.endTime) {
                         this.isAvailable = true;
-                        this.availabilityMessage = 'กรุณากรอกข้อมูลวันที่และเวลาให้ครบถ้วน';
+                        this.availabilityMessage = 'กรุณากรอกวันที่และเวลา';
                         return;
                     }
 
@@ -420,7 +364,7 @@
 
                     const dayName = this.getDayOfWeek(this.form.date);
 
-                    // 1. ตรวจสอบชนกับตารางสอนประจำ
+                    // ตรวจสอบตารางสอนประจำ
                     const conflictMaster = this.masterSchedule.find(item => {
                         if (item.room !== this.form.room || item.day !== dayName) return false;
                         const [mStart, mEnd] = item.time.replace(/ น\./g, '').split(' - ');
@@ -429,11 +373,11 @@
 
                     if (conflictMaster) {
                         this.isAvailable = false;
-                        this.availabilityMessage = `ห้องไม่ว่าง (ติดวิชา: ${conflictMaster.subject} โดย ${conflictMaster.instructor})`;
+                        this.availabilityMessage = `ห้องไม่ว่าง (ติดวิชา: ${conflictMaster.subject})`;
                         return;
                     }
 
-                    // 2. ตรวจสอบชนกับการจองชั่วคราวอื่น
+                    // ตรวจสอบการจองชั่วคราว
                     const conflictTemp = this.tempBookings.find(b => {
                         if (b.room !== this.form.room || b.date !== this.form.date) return false;
                         return (this.form.startTime < b.endTime && this.form.endTime > b.startTime);
@@ -441,7 +385,7 @@
 
                     if (conflictTemp) {
                         this.isAvailable = false;
-                        this.availabilityMessage = `ห้องไม่ว่าง (ถูกจองชั่วคราวแล้วโดย ${conflictTemp.requester})`;
+                        this.availabilityMessage = `ห้องถูกจองชั่วคราวแล้วโดย ${conflictTemp.requester}`;
                         return;
                     }
 
@@ -464,10 +408,8 @@
 
                     this.tempBookings.push(newBooking);
                     localStorage.setItem('tempBookings', JSON.stringify(this.tempBookings));
-
                     alert('จองห้องเรียนสำเร็จ!');
-                    
-                    // รีเซ็ตฟอร์มบางส่วน
+
                     this.form.requester = '';
                     this.form.title = '';
                     this.checkAvailability();
