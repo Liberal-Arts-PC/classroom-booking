@@ -23,7 +23,7 @@
                 <h1 class="text-xl sm:text-2xl font-bold flex items-center space-x-2">
                     <span>📚 ระบบจองห้องเรียน คณะศิลปศาสตร์</span>
                 </h1>
-                <p class="text-xs sm:text-sm text-indigo-100">ภาคเรียนที่ 2/2569 (16 พ.ย. 69 - 5 มี.ค. 70)</p>
+                <p class="text-xs sm:text-sm text-indigo-100">ภาคเรียนที่ 2/2569 (16 พ.ย. 69 - 5 มี.ค. 70) | เปิดบริการ 06:00 - 24:00 น.</p>
             </div>
             <div class="flex items-center space-x-2">
                 <button @click="exportCSV" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all flex items-center space-x-1.5">
@@ -39,9 +39,9 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
         
+        <!-- Booking Form & Stats Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Booking Form -->
+            <!-- Form -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center space-x-2">
                     <span class="bg-indigo-50 text-indigo-600 p-2 rounded-xl">
@@ -55,7 +55,7 @@
                 <form @submit.prevent="submitBooking" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">ห้องเรียน</label>
-                        <select x-model="form.room" @change="checkAvailability" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-indigo-500 font-medium">
+                        <select x-model="form.room" @change="checkAvailability" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium">
                             <option value="521">ห้อง 521</option>
                             <option value="522">ห้อง 522</option>
                             <option value="523">ห้อง 523</option>
@@ -91,7 +91,6 @@
                         <input type="text" x-model="form.title" placeholder="ระบุวัตถุประสงค์การใช้ห้อง" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-sm font-medium" required>
                     </div>
 
-                    <!-- Status Box -->
                     <div class="p-3 rounded-xl text-xs font-semibold flex items-center space-x-2" 
                          :class="isAvailable ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'">
                         <span class="w-2.5 h-2.5 rounded-full" :class="isAvailable ? 'bg-emerald-500' : 'bg-rose-500'"></span>
@@ -106,56 +105,74 @@
                 </form>
             </div>
 
-            <!-- Master Schedule Display -->
-            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">ตารางสอนประจำสัปดาห์</h2>
-                    
-                    <div class="flex items-center space-x-2">
-                        <select x-model="filterRoom" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-semibold">
-                            <option value="ALL">ทุกห้องเรียน</option>
-                            <option value="521">ห้อง 521</option>
-                            <option value="522">ห้อง 522</option>
-                            <option value="523">ห้อง 523</option>
-                            <option value="531">ห้อง 531</option>
-                            <option value="532">ห้อง 532</option>
-                            <option value="533">ห้อง 533</option>
-                        </select>
-                        <select x-model="filterDay" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-semibold">
-                            <option value="ALL">ทุกวัน</option>
-                            <option value="Monday">วันจันทร์</option>
-                            <option value="Tuesday">วันอังคาร</option>
-                            <option value="Wednesday">วันพุธ</option>
-                            <option value="Thursday">วันพฤหัสบดี</option>
-                            <option value="Friday">วันศุกร์</option>
-                            <option value="Saturday">วันเสาร์</option>
-                            <option value="Sunday">วันอาทิตย์</option>
-                        </select>
-                    </div>
+            <!-- Quick Info / Instructions -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">📌 คำแนะนำการใช้งานระบบ</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
+                        <li>สามารถตรวจสอบตารางเวลาห้องเรียนได้จากแถบตารางด้านล่าง โดยเลือกดูตามวันที่ต้องการ</li>
+                        <li>ระบบรองรับการจองครอบคลุมทุกวัน รวมถึง<strong>วันเสาร์และวันอาทิตย์</strong></li>
+                        <li>ช่วงเวลาให้บริการขยายตั้งแต่ <strong>06:00 ถึง 24:00 น.</strong></li>
+                        <li>หากต้องการส่งออกข้อมูลการจองชั่วคราวเพื่อนำไปใช้ใน Google Sheets สามารถกดปุ่มสีเขียวด้านบนได้ทันที</li>
+                    </ul>
                 </div>
+                <div class="mt-6 bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-xs text-indigo-800">
+                    <span class="font-bold">สถานะสีในตาราง:</span> 
+                    <span class="inline-block w-3 h-3 bg-blue-600 rounded-full ml-2 mr-1 align-middle"></span> วิชาสอนประจำ 
+                    <span class="inline-block w-3 h-3 bg-emerald-500 rounded-full ml-3 mr-1 align-middle"></span> จองชั่วคราว
+                </div>
+            </div>
+        </div>
 
-                <div class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
-                    <template x-for="(item, index) in filteredMasterSchedule" :key="index">
-                        <div class="bg-gray-50 border border-gray-200/60 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                            <div class="flex items-start space-x-3">
-                                <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-100 text-indigo-800" x-text="'ห้อง ' + item.room"></span>
-                                <div>
-                                    <div class="text-sm font-bold text-gray-900" x-text="item.subject"></div>
-                                    <div class="text-xs text-gray-500" x-text="item.instructor + ' (' + item.group + ')'"></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2 text-xs font-semibold self-end sm:self-center">
-                                <span class="bg-white px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600" x-text="getDayThai(item.day)"></span>
-                                <span class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-lg border border-blue-100" x-text="item.time"></span>
-                            </div>
-                        </div>
-                    </template>
-                    <div x-show="filteredMasterSchedule.length === 0" class="text-center py-12 text-gray-400 text-sm">
-                        ไม่พบตารางสอนในเงื่อนไขนี้
+        <!-- Visual Timeline Grid Section (Like your favorite layout) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900">ตารางใช้ห้องเรียน (Visual Grid)</h2>
+                    <p class="text-xs text-gray-500" x-text="'แสดงข้อมูลของวันที่: ' + (gridDate ? gridDate : 'ยังไม่ได้เลือก')"></p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600 mr-2">เลือกวันที่ดูตาราง:</label>
+                        <input type="date" x-model="gridDate" class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-semibold">
                     </div>
                 </div>
             </div>
 
+            <!-- Timeline Table Grid -->
+            <div class="overflow-x-auto border border-gray-200 rounded-xl">
+                <table class="w-full border-collapse text-xs text-center min-w-[900px]">
+                    <thead>
+                        <tr class="bg-gray-100 text-gray-700 border-b border-gray-200">
+                            <th class="py-3 px-3 text-left w-28 border-r border-gray-200">ห้อง / เวลา</th>
+                            <template x-for="hour in hoursList" :key="hour">
+                                <th class="py-3 px-1 border-r border-gray-200 font-semibold" x-text="hour + ':00'"></th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <template x-for="room in roomsList" :key="room">
+                            <tr class="hover:bg-gray-50/50">
+                                <td class="py-3 px-3 text-left font-bold bg-gray-50 border-r border-gray-200" x-text="'ห้อง ' + room"></td>
+                                <template x-for="hour in hoursList" :key="hour">
+                                    <td class="p-1 border-r border-gray-200 relative h-16 align-middle">
+                                        <!-- Render Master Classes or Temp Bookings matching this room & hour -->
+                                        <template x-for="slot in getEventsForCell(room, hour)" :key="slot.id">
+                                            <div class="absolute inset-1 rounded-lg p-1.5 text-[10px] font-semibold text-white flex flex-col justify-center items-center shadow-xs overflow-hidden"
+                                                 :class="slot.type === 'master' ? 'bg-blue-600' : 'bg-emerald-600'"
+                                                 :title="slot.title + ' (' + slot.time + ')'">
+                                                <span class="truncate w-full" x-text="slot.title"></span>
+                                                <span class="text-[9px] opacity-90 truncate w-full" x-text="slot.subtitle"></span>
+                                            </div>
+                                        </template>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Temporary Bookings Table -->
@@ -242,16 +259,18 @@
     <script>
         function classroomApp() {
             return {
-                filterRoom: 'ALL',
-                filterDay: 'ALL',
                 form: {
                     room: '521',
-                    date: '',
+                    date: new Date().toISOString().split('T')[0],
                     startTime: '09:00',
                     endTime: '12:00',
                     requester: '',
                     title: ''
                 },
+                gridDate: new Date().toISOString().split('T')[0],
+                roomsList: ['521', '522', '523', '531', '532', '533'],
+                hoursList: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                
                 isAvailable: true,
                 availabilityMessage: 'ห้องว่าง สามารถทำการจองได้',
                 showDeleteModal: false,
@@ -259,80 +278,68 @@
                 
                 masterSchedule: [
                     // วันจันทร์
-                    { day: 'Monday', room: '521', time: '09.30 - 12.30 น.', subject: 'วิชา SOC 2006 อาเซียนศึกษา', instructor: 'อ.มณรดา', group: 'อบ.ภายใน.3' },
-                    { day: 'Monday', room: '521', time: '13.30 - 16.30 น.', subject: 'วิชา วิทยศิลปะ', instructor: 'อ.มนตรี', group: 'โลหะ.1' },
-                    { day: 'Monday', room: '522', time: '08.30 - 11.30 น.', subject: 'วิชา HUM 1016 เทคนิคการพัฒนาบุคลิกภาพ', instructor: 'อ.กัลยา', group: 'อบ.ภายใน.4' },
-                    { day: 'Monday', room: '522', time: '13.30 - 16.30 น.', subject: 'วิชา GES 1029 พลวัตทางสังคมฯ', instructor: 'อ.มณรดา', group: 'จท.2' },
-                    { day: 'Monday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.จินตนา', group: 'โลหะ.2' },
-                    { day: 'Monday', room: '523', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสาร', instructor: 'อ.กิตติพง', group: 'เซรามิกส์.1' },
-                    { day: 'Monday', room: '531', time: '09.30 - 12.30 น.', subject: 'วิชา วิทยในชีวิตประจำวัน', instructor: 'อ.มนตรี', group: 'หศ.1' },
-                    { day: 'Monday', room: '531', time: '13.30 - 16.30 น.', subject: 'วิชา GES 1005 การเขียนรายงาน', instructor: 'อ.กัลยา', group: 'นิเทศ.1' },
-                    { day: 'Monday', room: '532', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'ผภ.2' },
-                    { day: 'Monday', room: '532', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'ศป.2' },
-                    { day: 'Monday', room: '533', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.อภินันท์', group: 'เซรามิกส์.1' },
-                    { day: 'Monday', room: '533', time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์', group: 'ถภ.2' },
+                    { day: 'Monday', room: '521', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา SOC 2006', instructor: 'อ.มณรดา' },
+                    { day: 'Monday', room: '521', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา วิทยศิลปะ', instructor: 'อ.มนตรี' },
+                    { day: 'Monday', room: '522', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา HUM 1016', instructor: 'อ.กัลยา' },
+                    { day: 'Monday', room: '522', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GES 1029', instructor: 'อ.มณรดา' },
+                    { day: 'Monday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.จินตนา' },
+                    { day: 'Monday', room: '523', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กิตติพง' },
+                    { day: 'Monday', room: '531', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา วิทยในชีวิต', instructor: 'อ.มนตรี' },
+                    { day: 'Monday', room: '531', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GES 1005', instructor: 'อ.กัลยา' },
+                    { day: 'Monday', room: '532', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
+                    { day: 'Monday', room: '532', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
+                    { day: 'Monday', room: '533', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.อภินันท์' },
+                    { day: 'Monday', room: '533', start: 14, end: 17, time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
                     
                     // วันอังคาร
-                    { day: 'Tuesday', room: '521', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์', group: 'เซรามิกส์.2' },
-                    { day: 'Tuesday', room: '521', time: '13.30 - 16.30 น.', subject: 'วิชา มนุษยกายภาพ', instructor: 'อ.มนตรี', group: 'ออกแบบ.2' },
-                    { day: 'Tuesday', room: '522', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสาร', instructor: 'อ.กานต์รวี', group: 'โลหะ.1' },
-                    { day: 'Tuesday', room: '522', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014 ภาษาไทยเพื่อการสื่อสาร', instructor: 'อ.กานต์รวี', group: 'ปท.2' },
-                    { day: 'Tuesday', room: '523', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'หศ.2' },
-                    { day: 'Tuesday', room: '523', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1015 วรรณคดีศึกษา', instructor: 'อ.เครือหวาย', group: 'หศ.3' },
-                    { day: 'Tuesday', room: '531', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.จินตนา', group: 'ผภ.2' },
-                    { day: 'Tuesday', room: '532', time: '09.30 - 12.30 น.', subject: 'วิชา GES 1029 พลวัตทางสังคมฯ', instructor: 'อ.มณรดา', group: 'ศป.3' },
-                    { day: 'Tuesday', room: '532', time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'นิเทศ.2' },
-                    { day: 'Tuesday', room: '533', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'หศ.2' },
-                    { day: 'Tuesday', room: '533', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1001 ภาษาอังกฤษทั่วไป', instructor: 'อ.รมนปวีร์', group: 'อน.1' },
+                    { day: 'Tuesday', room: '521', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
+                    { day: 'Tuesday', room: '521', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'มนุษยกายภาพ', instructor: 'อ.มนตรี' },
+                    { day: 'Tuesday', room: '522', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กานต์รวี' },
+                    { day: 'Tuesday', room: '522', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กานต์รวี' },
+                    { day: 'Tuesday', room: '523', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
+                    { day: 'Tuesday', room: '523', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1015', instructor: 'อ.เครือหวาย' },
+                    { day: 'Tuesday', room: '531', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.จินตนา' },
+                    { day: 'Tuesday', room: '532', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GES 1029', instructor: 'อ.มณรดา' },
+                    { day: 'Tuesday', room: '532', start: 14, end: 17, time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
+                    { day: 'Tuesday', room: '533', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
+                    { day: 'Tuesday', room: '533', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1001', instructor: 'อ.รมนปวีร์' },
 
                     // วันพุธ
-                    { day: 'Wednesday', room: '521', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.อภินันท์', group: 'ถภ.1' },
-                    { day: 'Wednesday', room: '521', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '521', time: '17.30 - 19.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'ถภ.1' },
-                    { day: 'Wednesday', room: '522', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '522', time: '17.30 - 20.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์', group: 'ถภ.2 สมทบ' },
-                    { day: 'Wednesday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GES 1005 การเขียนรายงาน', instructor: 'อ.กัลยา', group: 'ผภ.2' },
-                    { day: 'Wednesday', room: '523', time: '13.30 - 15.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา', group: 'ถภ.2' },
-                    { day: 'Wednesday', room: '523', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '523', time: '17.30 - 18.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา', group: 'ถภ.2' },
-                    { day: 'Wednesday', room: '531', time: '12.30 - 15.30 น.', subject: 'วิชา GES 1008 พัฒนาบุคลิกภาพ', instructor: 'อ.กัลยา', group: 'ศป.2' },
-                    { day: 'Wednesday', room: '531', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '531', time: '17.30 - 18.30 น.', subject: 'วิชา GES 1005 การเขียนรายงาน', instructor: 'อ.กัลยา', group: 'นิเทศ.1' },
-                    { day: 'Wednesday', room: '532', time: '13.30 - 15.30 น.', subject: 'วิชา สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ', group: 'ถภ.2' },
-                    { day: 'Wednesday', room: '532', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
-                    { day: 'Wednesday', room: '532', time: '17.30 - 21.30 น.', subject: 'วิชา สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ', group: 'ถภ.2' },
-                    { day: 'Wednesday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1003 ภาษาอังกฤษเพื่อการสื่อสาร', instructor: 'ดร.สาธิตา', group: 'หก.2' },
-                    { day: 'Wednesday', room: '533', time: '12.30 - 15.30 น.', subject: 'วิชา EDU 1103 ภาษาอังกฤษวิชาชีพครู', instructor: 'ดร.สาธิตา', group: 'ศป.1' },
-                    { day: 'Wednesday', room: '533', time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.', group: '-' },
+                    { day: 'Wednesday', room: '521', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.อภินันท์' },
+                    { day: 'Wednesday', room: '521', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
+                    { day: 'Wednesday', room: '521', start: 17, end: 19, time: '17.30 - 19.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
+                    { day: 'Wednesday', room: '522', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
+                    { day: 'Wednesday', room: '522', start: 17, end: 20, time: '17.30 - 20.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
+                    { day: 'Wednesday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GES 1005', instructor: 'อ.กัลยา' },
+                    { day: 'Wednesday', room: '523', start: 13, end: 15, time: '13.30 - 15.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา' },
+                    { day: 'Wednesday', room: '523', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
+                    { day: 'Wednesday', room: '531', start: 12, end: 15, time: '12.30 - 15.30 น.', subject: 'วิชา GES 1008', instructor: 'อ.กัลยา' },
+                    { day: 'Wednesday', room: '531', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
+                    { day: 'Wednesday', room: '532', start: 13, end: 15, time: '13.30 - 15.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'ระบุ' },
+                    { day: 'Wednesday', room: '532', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
+                    { day: 'Wednesday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1003', instructor: 'ดร.สาธิตา' },
+                    { day: 'Wednesday', room: '533', start: 12, end: 15, time: '12.30 - 15.30 น.', subject: 'วิชา EDU 1103', instructor: 'ดร.สาธิตา' },
 
                     // วันพฤหัสบดี
-                    { day: 'Thursday', room: '522', time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1017 ภาษาไทยกับศิลปะการนำเสนอ', instructor: 'อ.เครือหวาย', group: 'ศป.3' },
-                    { day: 'Thursday', room: '523', time: '08.30 - 11.30 น.', subject: 'วิชา GES 1007 จิตวิทยาองค์การ', instructor: 'อ.กัลยา', group: 'หก.2' },
-                    { day: 'Thursday', room: '523', time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา', group: 'นิเทศ.2 สมทบ' },
-                    { day: 'Thursday', room: '531', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.จินตนา', group: 'ภพ.1+ปก.1' },
-                    { day: 'Thursday', room: '531', time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1009 ภาษาอังกฤษสอบวัดมาตรฐาน', instructor: 'อ.จินตนา', group: 'ปก.2+ภพ.2' },
-                    { day: 'Thursday', room: '532', time: '09.30 - 12.30 น.', subject: 'วิชา สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ', group: 'หก.2' },
-                    { day: 'Thursday', room: '532', time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1008 ภาษาอังกฤษนำเสนองาน', instructor: 'อ.รมนปวีร์', group: 'ปก.2+ภพ.2' },
-                    { day: 'Thursday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'จก.1' },
+                    { day: 'Thursday', room: '522', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1017', instructor: 'อ.เครือหวาย' },
+                    { day: 'Thursday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GES 1007', instructor: 'อ.กัลยา' },
+                    { day: 'Thursday', room: '523', start: 16, end: 19, time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
+                    { day: 'Thursday', room: '531', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.จินตนา' },
+                    { day: 'Thursday', room: '531', start: 13, end: 17, time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1009', instructor: 'อ.จินตนา' },
+                    { day: 'Thursday', room: '532', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'ระบุ' },
+                    { day: 'Thursday', room: '532', start: 13, end: 17, time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1008', instructor: 'อ.รมนปวีร์' },
+                    { day: 'Thursday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
 
                     // วันศุกร์
-                    { day: 'Friday', room: '521', time: '20.30 - 21.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์', group: 'ถภ.1' },
-                    { day: 'Friday', room: '523', time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'นิเทศ.1 สมทบ' },
-                    { day: 'Friday', room: '532', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'จท.1' },
-                    { day: 'Friday', room: '532', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'ดร.สาธิตา', group: 'ผภ.1' },
-                    { day: 'Friday', room: '533', time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1004 สนทนาภาษาอังกฤษสากล', instructor: 'อ.จินตนา', group: 'โลหะ.2' },
-                    { day: 'Friday', room: '533', time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002 ภาษาอังกฤษเพื่ออาชีพ', instructor: 'อ.รมนปวีร์', group: 'นิเทศ.1' }
+                    { day: 'Friday', room: '521', start: 20, end: 21, time: '20.30 - 21.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
+                    { day: 'Friday', room: '523', start: 16, end: 19, time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
+                    { day: 'Friday', room: '532', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
+                    { day: 'Friday', room: '532', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002', instructor: 'ดร.สาธิตา' },
+                    { day: 'Friday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1004', instructor: 'อ.จินตนา' },
+                    { day: 'Friday', room: '533', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' }
                 ],
 
                 tempBookings: JSON.parse(localStorage.getItem('tempBookings') || '[]'),
-
-                get filteredMasterSchedule() {
-                    return this.masterSchedule.filter(item => {
-                        let matchRoom = (this.filterRoom === 'ALL' || item.room === this.filterRoom);
-                        let matchDay = (this.filterDay === 'ALL' || item.day === this.filterDay);
-                        return matchRoom && matchDay;
-                    });
-                },
 
                 getDayOfWeek(dateString) {
                     if (!dateString) return '';
@@ -341,12 +348,43 @@
                     return days[date.getDay()];
                 },
 
-                getDayThai(dayEn) {
-                    const map = {
-                        'Monday': 'วันจันทร์', 'Tuesday': 'วันอังคาร', 'Wednesday': 'วันพุธ',
-                        'Thursday': 'วันพฤหัสบดี', 'Friday': 'วันศุกร์', 'Saturday': 'วันเสาร์', 'Sunday': 'วันอาทิตย์'
-                    };
-                    return map[dayEn] || dayEn;
+                getEventsForCell(room, hour) {
+                    const dayName = this.getDayOfWeek(this.gridDate);
+                    let events = [];
+
+                    // 1. ตารางสอนประจำ
+                    this.masterSchedule.forEach(item => {
+                        if (item.room === room && item.day === dayName) {
+                            if (hour >= item.start && hour < item.end) {
+                                events.push({
+                                    id: 'm-' + item.subject + '-' + hour,
+                                    type: 'master',
+                                    title: item.subject,
+                                    subtitle: item.instructor,
+                                    time: item.time
+                                });
+                            }
+                        }
+                    });
+
+                    // 2. จองชั่วคราว
+                    this.tempBookings.forEach(b => {
+                        if (b.room === room && b.date === this.gridDate) {
+                            const bStartHour = parseInt(b.startTime.split(':')[0]);
+                            const bEndHour = parseInt(b.endTime.split(':')[0]);
+                            if (hour >= bStartHour && hour < bEndHour) {
+                                events.push({
+                                    id: 't-' + b.id + '-' + hour,
+                                    type: 'temp',
+                                    title: b.title,
+                                    subtitle: b.requester,
+                                    time: b.startTime + '-' + b.endTime
+                                });
+                            }
+                        }
+                    });
+
+                    return events;
                 },
 
                 checkAvailability() {
@@ -364,7 +402,7 @@
 
                     const dayName = this.getDayOfWeek(this.form.date);
 
-                    // ตรวจสอบตารางสอนประจำ
+                    // เช็คชนตารางสอน
                     const conflictMaster = this.masterSchedule.find(item => {
                         if (item.room !== this.form.room || item.day !== dayName) return false;
                         const [mStart, mEnd] = item.time.replace(/ น\./g, '').split(' - ');
@@ -377,7 +415,7 @@
                         return;
                     }
 
-                    // ตรวจสอบการจองชั่วคราว
+                    // เช็คชนจองชั่วคราว
                     const conflictTemp = this.tempBookings.find(b => {
                         if (b.room !== this.form.room || b.date !== this.form.date) return false;
                         return (this.form.startTime < b.endTime && this.form.endTime > b.startTime);
