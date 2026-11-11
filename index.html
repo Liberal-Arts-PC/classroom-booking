@@ -14,7 +14,7 @@
         body { font-family: 'Prompt', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col" x-data="classroomApp()">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col" x-data="classroomApp()" x-init="fetchBookings()">
 
     <!-- Header -->
     <header class="bg-indigo-600 text-white shadow-md">
@@ -26,11 +26,17 @@
                 <p class="text-xs sm:text-sm text-indigo-100">ภาคเรียนที่ 2/2569 (16 พ.ย. 69 - 5 มี.ค. 70) | เปิดบริการ 06:00 - 24:00 น.</p>
             </div>
             <div class="flex items-center space-x-2">
+                <button @click="fetchBookings" class="bg-indigo-500 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all flex items-center space-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" :class="loading ? 'animate-spin' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>รีเฟรชข้อมูล</span>
+                </button>
                 <button @click="exportCSV" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all flex items-center space-x-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    <span>ส่งออกไป Google Sheets (CSV)</span>
+                    <span>ส่งออก CSV</span>
                 </button>
             </div>
         </div>
@@ -39,7 +45,7 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full space-y-6">
         
-        <!-- Booking Form & Stats Grid -->
+        <!-- Form & Info -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Form -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -97,34 +103,34 @@
                         <span x-text="availabilityMessage"></span>
                     </div>
 
-                    <button type="submit" :disabled="!isAvailable" 
+                    <button type="submit" :disabled="!isAvailable || loading" 
                             class="w-full py-3 rounded-xl font-semibold text-sm text-white transition-all shadow-md"
-                            :class="isAvailable ? 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'">
-                        ยืนยันการจองห้อง
+                            :class="(isAvailable && !loading) ? 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'">
+                        <span x-show="!loading">ยืนยันการจองห้อง</span>
+                        <span x-show="loading">กำลังบันทึกข้อมูล...</span>
                     </button>
                 </form>
             </div>
 
-            <!-- Quick Info / Instructions -->
+            <!-- Visual Help -->
             <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-base font-bold text-gray-900 mb-2">📌 คำแนะนำการใช้งานระบบ</h3>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">📌 ระบบเชื่อมต่อฐานข้อมูล Google Sheets</h3>
                     <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
-                        <li>สามารถตรวจสอบตารางเวลาห้องเรียนได้จากแถบตารางด้านล่าง โดยเลือกดูตามวันที่ต้องการ</li>
-                        <li>ระบบรองรับการจองครอบคลุมทุกวัน รวมถึง<strong>วันเสาร์และวันอาทิตย์</strong></li>
-                        <li>ช่วงเวลาให้บริการขยายตั้งแต่ <strong>06:00 ถึง 24:00 น.</strong></li>
-                        <li>หากต้องการส่งออกข้อมูลการจองชั่วคราวเพื่อนำไปใช้ใน Google Sheets สามารถกดปุ่มสีเขียวด้านบนได้ทันที</li>
+                        <li>เมื่อมีผู้จอง ข้อมูลจะถูกบันทึกลง <strong>Google Sheets กลาง</strong> โดยอัตโนมัติ</li>
+                        <li>ผู้ใช้งานทุกคนที่เปิดหน้าเว็บจะเห็นข้อมูลตารางการจองชุดเดียวกันแบบ Real-time</li>
+                        <li>สามารถกดปุ่ม <strong>"รีเฟรชข้อมูล"</strong> มุมขวาบนเพื่ออัปเดตสถานะล่าสุดได้ตลอดเวลา</li>
                     </ul>
                 </div>
                 <div class="mt-6 bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-xs text-indigo-800">
-                    <span class="font-bold">สถานะสีในตาราง:</span> 
+                    <span class="font-bold">สัญลักษณ์ตาราง:</span> 
                     <span class="inline-block w-3 h-3 bg-blue-600 rounded-full ml-2 mr-1 align-middle"></span> วิชาสอนประจำ 
                     <span class="inline-block w-3 h-3 bg-emerald-500 rounded-full ml-3 mr-1 align-middle"></span> จองชั่วคราว
                 </div>
             </div>
         </div>
 
-        <!-- Visual Timeline Grid Section (Like your favorite layout) -->
+        <!-- Visual Timeline Grid Section -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                 <div>
@@ -140,7 +146,6 @@
                 </div>
             </div>
 
-            <!-- Timeline Table Grid -->
             <div class="overflow-x-auto border border-gray-200 rounded-xl">
                 <table class="w-full border-collapse text-xs text-center min-w-[900px]">
                     <thead>
@@ -157,7 +162,6 @@
                                 <td class="py-3 px-3 text-left font-bold bg-gray-50 border-r border-gray-200" x-text="'ห้อง ' + room"></td>
                                 <template x-for="hour in hoursList" :key="hour">
                                     <td class="p-1 border-r border-gray-200 relative h-16 align-middle">
-                                        <!-- Render Master Classes or Temp Bookings matching this room & hour -->
                                         <template x-for="slot in getEventsForCell(room, hour)" :key="slot.id">
                                             <div class="absolute inset-1 rounded-lg p-1.5 text-[10px] font-semibold text-white flex flex-col justify-center items-center shadow-xs overflow-hidden"
                                                  :class="slot.type === 'master' ? 'bg-blue-600' : 'bg-emerald-600'"
@@ -212,7 +216,10 @@
                             </tr>
                         </template>
                         <tr x-show="tempBookings.length === 0">
-                            <td colspan="6" class="text-center py-8 text-gray-400 text-sm">ยังไม่มีรายการจองชั่วคราวในระบบ</td>
+                            <td colspan="6" class="text-center py-8 text-gray-400 text-sm">
+                                <span x-show="!loading">ยังไม่มีรายการจองชั่วคราวในระบบ</span>
+                                <span x-show="loading">กำลังโหลดข้อมูลจาก Google Sheets...</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -233,7 +240,7 @@
                 <h3 class="text-lg font-bold text-gray-900">ยืนยันการลบรายการจอง</h3>
             </div>
             
-            <p class="text-sm text-gray-600">คุณต้องการลบรายการจองนี้ใช่หรือไม่?</p>
+            <p class="text-sm text-gray-600">คุณต้องการลบรายการจองนี้ออกจาก Google Sheets ใช่หรือไม่?</p>
             
             <div class="bg-gray-50 rounded-xl p-3.5 space-y-1.5 text-xs font-medium text-gray-700 border border-gray-200">
                 <div><span class="text-gray-400">ห้อง:</span> <span class="font-bold text-gray-900" x-text="'ห้อง ' + (selectedBookingToDelete?.room || '')"></span></div>
@@ -245,7 +252,10 @@
 
             <div class="flex items-center justify-end space-x-3 pt-2">
                 <button @click="showDeleteModal = false" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">ยกเลิก</button>
-                <button @click="confirmDelete" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm">ลบข้อมูล</button>
+                <button @click="confirmDelete" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm" :disabled="loading">
+                    <span x-show="!loading">ลบข้อมูล</span>
+                    <span x-show="loading">กำลังลบ...</span>
+                </button>
             </div>
         </div>
     </div>
@@ -257,8 +267,11 @@
 
     <!-- Script Logic -->
     <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxEV7VzPb7A_azTBhnkCgLoMAQ-AgOwxzpaCOmEkI-0ZqxX9TIZuo6FL5bu7OUv2O-XEw/exec';
+
         function classroomApp() {
             return {
+                loading: false,
                 form: {
                     room: '521',
                     date: new Date().toISOString().split('T')[0],
@@ -275,9 +288,9 @@
                 availabilityMessage: 'ห้องว่าง สามารถทำการจองได้',
                 showDeleteModal: false,
                 selectedBookingToDelete: null,
+                tempBookings: [],
                 
                 masterSchedule: [
-                    // วันจันทร์
                     { day: 'Monday', room: '521', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา SOC 2006', instructor: 'อ.มณรดา' },
                     { day: 'Monday', room: '521', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา วิทยศิลปะ', instructor: 'อ.มนตรี' },
                     { day: 'Monday', room: '522', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา HUM 1016', instructor: 'อ.กัลยา' },
@@ -291,7 +304,6 @@
                     { day: 'Monday', room: '533', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.อภินันท์' },
                     { day: 'Monday', room: '533', start: 14, end: 17, time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
                     
-                    // วันอังคาร
                     { day: 'Tuesday', room: '521', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
                     { day: 'Tuesday', room: '521', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'มนุษยกายภาพ', instructor: 'อ.มนตรี' },
                     { day: 'Tuesday', room: '522', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กานต์รวี' },
@@ -304,7 +316,6 @@
                     { day: 'Tuesday', room: '533', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
                     { day: 'Tuesday', room: '533', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1001', instructor: 'อ.รมนปวีร์' },
 
-                    // วันพุธ
                     { day: 'Wednesday', room: '521', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.อภินันท์' },
                     { day: 'Wednesday', room: '521', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
                     { day: 'Wednesday', room: '521', start: 17, end: 19, time: '17.30 - 19.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
@@ -320,7 +331,6 @@
                     { day: 'Wednesday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1003', instructor: 'ดร.สาธิตา' },
                     { day: 'Wednesday', room: '533', start: 12, end: 15, time: '12.30 - 15.30 น.', subject: 'วิชา EDU 1103', instructor: 'ดร.สาธิตา' },
 
-                    // วันพฤหัสบดี
                     { day: 'Thursday', room: '522', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1017', instructor: 'อ.เครือหวาย' },
                     { day: 'Thursday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GES 1007', instructor: 'อ.กัลยา' },
                     { day: 'Thursday', room: '523', start: 16, end: 19, time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
@@ -330,7 +340,6 @@
                     { day: 'Thursday', room: '532', start: 13, end: 17, time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1008', instructor: 'อ.รมนปวีร์' },
                     { day: 'Thursday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
 
-                    // วันศุกร์
                     { day: 'Friday', room: '521', start: 20, end: 21, time: '20.30 - 21.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
                     { day: 'Friday', room: '523', start: 16, end: 19, time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
                     { day: 'Friday', room: '532', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
@@ -339,7 +348,20 @@
                     { day: 'Friday', room: '533', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' }
                 ],
 
-                tempBookings: JSON.parse(localStorage.getItem('tempBookings') || '[]'),
+                fetchBookings() {
+                    this.loading = true;
+                    fetch(GOOGLE_SCRIPT_URL)
+                        .then(res => res.json())
+                        .then(data => {
+                            this.tempBookings = data;
+                            this.loading = false;
+                            this.checkAvailability();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            this.loading = false;
+                        });
+                },
 
                 getDayOfWeek(dateString) {
                     if (!dateString) return '';
@@ -352,7 +374,6 @@
                     const dayName = this.getDayOfWeek(this.gridDate);
                     let events = [];
 
-                    // 1. ตารางสอนประจำ
                     this.masterSchedule.forEach(item => {
                         if (item.room === room && item.day === dayName) {
                             if (hour >= item.start && hour < item.end) {
@@ -367,7 +388,6 @@
                         }
                     });
 
-                    // 2. จองชั่วคราว
                     this.tempBookings.forEach(b => {
                         if (b.room === room && b.date === this.gridDate) {
                             const bStartHour = parseInt(b.startTime.split(':')[0]);
@@ -402,7 +422,6 @@
 
                     const dayName = this.getDayOfWeek(this.form.date);
 
-                    // เช็คชนตารางสอน
                     const conflictMaster = this.masterSchedule.find(item => {
                         if (item.room !== this.form.room || item.day !== dayName) return false;
                         const [mStart, mEnd] = item.time.replace(/ น\./g, '').split(' - ');
@@ -415,7 +434,6 @@
                         return;
                     }
 
-                    // เช็คชนจองชั่วคราว
                     const conflictTemp = this.tempBookings.find(b => {
                         if (b.room !== this.form.room || b.date !== this.form.date) return false;
                         return (this.form.startTime < b.endTime && this.form.endTime > b.startTime);
@@ -432,8 +450,9 @@
                 },
 
                 submitBooking() {
-                    if (!this.isAvailable) return;
+                    if (!this.isAvailable || this.loading) return;
 
+                    this.loading = true;
                     const newBooking = {
                         id: Date.now(),
                         room: this.form.room,
@@ -444,13 +463,21 @@
                         title: this.form.title
                     };
 
-                    this.tempBookings.push(newBooking);
-                    localStorage.setItem('tempBookings', JSON.stringify(this.tempBookings));
-                    alert('จองห้องเรียนสำเร็จ!');
-
-                    this.form.requester = '';
-                    this.form.title = '';
-                    this.checkAvailability();
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'add', booking: newBooking })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        alert('จองห้องเรียนสำเร็จ!');
+                        this.form.requester = '';
+                        this.form.title = '';
+                        this.fetchBookings();
+                    })
+                    .catch(err => {
+                        alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+                        this.loading = false;
+                    });
                 },
 
                 openDeleteModal(booking) {
@@ -459,11 +486,23 @@
                 },
 
                 confirmDelete() {
-                    if (!this.selectedBookingToDelete) return;
-                    this.tempBookings = this.tempBookings.filter(b => b.id !== this.selectedBookingToDelete.id);
-                    localStorage.setItem('tempBookings', JSON.stringify(this.tempBookings));
-                    this.showDeleteModal = false;
-                    this.selectedBookingToDelete = null;
+                    if (!this.selectedBookingToDelete || this.loading) return;
+                    this.loading = true;
+
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'delete', id: this.selectedBookingToDelete.id })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        this.showDeleteModal = false;
+                        this.selectedBookingToDelete = null;
+                        this.fetchBookings();
+                    })
+                    .catch(err => {
+                        alert('เกิดข้อผิดพลาดในการลบข้อมูล');
+                        this.loading = false;
+                    });
                 },
 
                 exportCSV() {
