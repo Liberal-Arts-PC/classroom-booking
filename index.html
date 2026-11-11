@@ -291,61 +291,71 @@
                 tempBookings: [],
                 
                 masterSchedule: [
-                    { day: 'Monday', room: '521', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา SOC 2006', instructor: 'อ.มณรดา' },
-                    { day: 'Monday', room: '521', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา วิทยศิลปะ', instructor: 'อ.มนตรี' },
-                    { day: 'Monday', room: '522', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา HUM 1016', instructor: 'อ.กัลยา' },
-                    { day: 'Monday', room: '522', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GES 1029', instructor: 'อ.มณรดา' },
-                    { day: 'Monday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.จินตนา' },
-                    { day: 'Monday', room: '523', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กิตติพง' },
-                    { day: 'Monday', room: '531', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา วิทยในชีวิต', instructor: 'อ.มนตรี' },
-                    { day: 'Monday', room: '531', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GES 1005', instructor: 'อ.กัลยา' },
-                    { day: 'Monday', room: '532', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
-                    { day: 'Monday', room: '532', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
-                    { day: 'Monday', room: '533', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.อภินันท์' },
-                    { day: 'Monday', room: '533', start: 14, end: 17, time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
-                    
-                    { day: 'Tuesday', room: '521', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
-                    { day: 'Tuesday', room: '521', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'มนุษยกายภาพ', instructor: 'อ.มนตรี' },
-                    { day: 'Tuesday', room: '522', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กานต์รวี' },
-                    { day: 'Tuesday', room: '522', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1014', instructor: 'อ.กานต์รวี' },
-                    { day: 'Tuesday', room: '523', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
-                    { day: 'Tuesday', room: '523', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1015', instructor: 'อ.เครือหวาย' },
-                    { day: 'Tuesday', room: '531', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.จินตนา' },
-                    { day: 'Tuesday', room: '532', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GES 1029', instructor: 'อ.มณรดา' },
-                    { day: 'Tuesday', room: '532', start: 14, end: 17, time: '14.30 - 17.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
-                    { day: 'Tuesday', room: '533', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
-                    { day: 'Tuesday', room: '533', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1001', instructor: 'อ.รมนปวีร์' },
+                    // วันจันทร์
+                    { day: 'Monday', room: '521', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'SOC 2006 อาเซียนศึกษา', instructor: 'อ.มณรดา (อบ.ภายใน.3)' },
+                    { day: 'Monday', room: '521', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'วิทยศิลปะ', instructor: 'อ.มนตรี (โลหะ.1)' },
+                    { day: 'Monday', room: '522', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'HUM 1016 เทคนิคการพัฒนาบุคลิกภาพ', instructor: 'อ.กัลยา (อบ.ภายใน.4)' },
+                    { day: 'Monday', room: '522', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GES 1029 พลวัตทางสังคมฯ', instructor: 'อ.มณรดา (จท.2)' },
+                    { day: 'Monday', room: '523', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.จินตนา (โลหะ.2+ป.ไทย.2)' },
+                    { day: 'Monday', room: '523', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1014 ภาษาไทยเพื่อการสื่อสารฯ', instructor: 'อ.กิตติพง (เซรามิกส์.1)' },
+                    { day: 'Monday', room: '531', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'วิทยในชีวิตประจำวัน', instructor: 'อ.มนตรี (หศ.1)' },
+                    { day: 'Monday', room: '531', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GES 1005 การเขียนรายงานฯ', instructor: 'อ.กัลยา (นิเทศ.1)' },
+                    { day: 'Monday', room: '532', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา (ผภ.2)' },
+                    { day: 'Monday', room: '532', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา (ศป.2)' },
+                    { day: 'Monday', room: '533', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.อภินันท์ (เซรามิกส์.1)' },
+                    { day: 'Monday', room: '533', start: 14, end: 18, time: '14.30 - 17.30 น.', subject: 'GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์ (ถภ.2)' },
 
-                    { day: 'Wednesday', room: '521', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.อภินันท์' },
-                    { day: 'Wednesday', room: '521', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
-                    { day: 'Wednesday', room: '521', start: 17, end: 19, time: '17.30 - 19.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
-                    { day: 'Wednesday', room: '522', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
-                    { day: 'Wednesday', room: '522', start: 17, end: 20, time: '17.30 - 20.30 น.', subject: 'วิชา GEL 1003', instructor: 'อ.อภินันท์' },
-                    { day: 'Wednesday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GES 1005', instructor: 'อ.กัลยา' },
-                    { day: 'Wednesday', room: '523', start: 13, end: 15, time: '13.30 - 15.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา' },
-                    { day: 'Wednesday', room: '523', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
-                    { day: 'Wednesday', room: '531', start: 12, end: 15, time: '12.30 - 15.30 น.', subject: 'วิชา GES 1008', instructor: 'อ.กัลยา' },
-                    { day: 'Wednesday', room: '531', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
-                    { day: 'Wednesday', room: '532', start: 13, end: 15, time: '13.30 - 15.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'ระบุ' },
-                    { day: 'Wednesday', room: '532', start: 15, end: 17, time: '15.30 - 17.30 น.', subject: 'กิจกรรม นศ.', instructor: 'ชมรม' },
-                    { day: 'Wednesday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1003', instructor: 'ดร.สาธิตา' },
-                    { day: 'Wednesday', room: '533', start: 12, end: 15, time: '12.30 - 15.30 น.', subject: 'วิชา EDU 1103', instructor: 'ดร.สาธิตา' },
+                    // วันอังคาร
+                    { day: 'Tuesday', room: '521', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์ (เซรามิกส์.2)' },
+                    { day: 'Tuesday', room: '521', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'มนุษยกายภาพ', instructor: 'อ.มนตรี (ออกแบบ.2)' },
+                    { day: 'Tuesday', room: '522', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1014 ภาษาไทยเพื่อการสื่อสารฯ', instructor: 'อ.กานต์รวี (โลหะ.1)' },
+                    { day: 'Tuesday', room: '522', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1014 ภาษาไทยเพื่อการสื่อสารฯ', instructor: 'อ.กานต์รวี (ปท.2)' },
+                    { day: 'Tuesday', room: '523', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา (ศป.1)' },
+                    { day: 'Tuesday', room: '523', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1015 วรรณคดีศึกษา', instructor: 'อ.เครือหวาย (หศ.3)' },
+                    { day: 'Tuesday', room: '531', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.เครือหวาย (หศ.2)' },
+                    { day: 'Tuesday', room: '531', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.จินตนา (ผภ.2)' },
+                    { day: 'Tuesday', room: '532', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GES 1029 พลวัตทางสังคมฯ', instructor: 'อ.มณรดา (ศป.3)' },
+                    { day: 'Tuesday', room: '532', start: 14, end: 18, time: '14.30 - 17.30 น.', subject: 'GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา (นิเทศ.2)' },
+                    { day: 'Tuesday', room: '533', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.รมนปวีร์ (หศ.2)' },
+                    { day: 'Tuesday', room: '533', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1001 ภาษาอังกฤษทั่วไป', instructor: 'อ.รมนปวีร์ (อน.1)' },
 
-                    { day: 'Thursday', room: '522', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'วิชา GEL 1017', instructor: 'อ.เครือหวาย' },
-                    { day: 'Thursday', room: '523', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GES 1007', instructor: 'อ.กัลยา' },
-                    { day: 'Thursday', room: '523', start: 16, end: 19, time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1012', instructor: 'อ.วัฒนา' },
-                    { day: 'Thursday', room: '531', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.จินตนา' },
-                    { day: 'Thursday', room: '531', start: 13, end: 17, time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1009', instructor: 'อ.จินตนา' },
-                    { day: 'Thursday', room: '532', start: 9, end: 12, time: '09.30 - 12.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'ระบุ' },
-                    { day: 'Thursday', room: '532', start: 13, end: 17, time: '13.30 - 17.30 น.', subject: 'วิชา GEL 1008', instructor: 'อ.รมนปวีร์' },
-                    { day: 'Thursday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
+                    // วันพุธ
+                    { day: 'Wednesday', room: '521', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.อภินันท์ (ถภ.1)' },
+                    { day: 'Wednesday', room: '521', start: 15, end: 18, time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.' },
+                    { day: 'Wednesday', room: '521', start: 17, end: 20, time: '17.30 - 19.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.รมนปวีร์ (ถภ.1)' },
+                    { day: 'Wednesday', room: '522', start: 15, end: 18, time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.' },
+                    { day: 'Wednesday', room: '522', start: 17, end: 21, time: '17.30 - 20.30 น.', subject: 'GEL 1003 ภาษาอังกฤษดิจิทัล', instructor: 'อ.อภินันท์ (ถภ.2 สมทบ)' },
+                    { day: 'Wednesday', room: '523', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GES 1005 การเขียนรายงานฯ', instructor: 'อ.กัลยา (ผภ.2)' },
+                    { day: 'Wednesday', room: '523', start: 13, end: 16, time: '13.30 - 15.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา (ถภ.2)' },
+                    { day: 'Wednesday', room: '523', start: 15, end: 18, time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.' },
+                    { day: 'Wednesday', room: '523', start: 17, end: 19, time: '17.30 - 18.30 น.', subject: 'วิชา สถิติ', instructor: 'อ.อังคณา (ถภ.2)' },
+                    { day: 'Wednesday', room: '531', start: 12, end: 16, time: '12.30 - 15.30 น.', subject: 'GES 1008 พัฒนาบุคลิกภาพฯ', instructor: 'อ.กัลยา (ศป.2)' },
+                    { day: 'Wednesday', room: '531', start: 15, end: 18, time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.' },
+                    { day: 'Wednesday', room: '531', start: 17, end: 19, time: '17.30 - 18.30 น.', subject: 'GES 1005 การเขียนรายงานฯ', instructor: 'อ.กัลยา (นิเทศ.1)' },
+                    { day: 'Wednesday', room: '532', start: 13, end: 16, time: '13.30 - 15.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ (ถภ.2)' },
+                    { day: 'Wednesday', room: '532', start: 15, end: 18, time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.' },
+                    { day: 'Wednesday', room: '532', start: 17, end: 22, time: '17.30 - 21.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ (ถภ.2)' },
+                    { day: 'Wednesday', room: '533', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1003 ภาษาอังกฤษสื่อสาร', instructor: 'ดร.สาธิตา (หก.2)' },
+                    { day: 'Wednesday', room: '533', start: 12, end: 16, time: '12.30 - 15.30 น.', subject: 'EDU 1103 อังกฤษวิชาชีพครู', instructor: 'ดร.สาธิตา (ศป.1)' },
+                    { day: 'Wednesday', room: '533', start: 15, end: 18, time: '15.30 - 17.30 น.', subject: 'กิจกรรมนักศึกษา', instructor: 'ชมรม นศ.' },
 
-                    { day: 'Friday', room: '521', start: 20, end: 21, time: '20.30 - 21.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
-                    { day: 'Friday', room: '523', start: 16, end: 19, time: '16.30 - 19.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
-                    { day: 'Friday', room: '532', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' },
-                    { day: 'Friday', room: '532', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002', instructor: 'ดร.สาธิตา' },
-                    { day: 'Friday', room: '533', start: 8, end: 11, time: '08.30 - 11.30 น.', subject: 'วิชา GEL 1004', instructor: 'อ.จินตนา' },
-                    { day: 'Friday', room: '533', start: 13, end: 16, time: '13.30 - 16.30 น.', subject: 'วิชา GEL 1002', instructor: 'อ.รมนปวีร์' }
+                    // วันพฤหัสบดี
+                    { day: 'Thursday', room: '522', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'GEL 1017 ศิลปะการนำเสนอ', instructor: 'อ.เครือหวาย (ศป.3)' },
+                    { day: 'Thursday', room: '523', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GES 1007 จิตวิทยาองค์การฯ', instructor: 'อ.กัลยา (หก.2)' },
+                    { day: 'Thursday', room: '523', start: 16, end: 20, time: '16.30 - 19.30 น.', subject: 'GEL 1012 ภาษาไทยเชิงวิชาชีพ', instructor: 'อ.วัฒนา (นิเทศ.2 สมทบ)' },
+                    { day: 'Thursday', room: '531', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.จินตนา (ภพ.1+ปก.1)' },
+                    { day: 'Thursday', room: '531', start: 13, end: 18, time: '13.30 - 17.30 น.', subject: 'GEL 1009 อังกฤษสอบมาตรฐาน', instructor: 'อ.จินตนา (ปก.2+ภพ.2)' },
+                    { day: 'Thursday', room: '532', start: 9, end: 13, time: '09.30 - 12.30 น.', subject: 'สิ่งแวดล้อม', instructor: 'อาจารย์ผู้สอนตามระบุ (หก.2)' },
+                    { day: 'Thursday', room: '532', start: 13, end: 18, time: '13.30 - 17.30 น.', subject: 'GEL 1008 อังกฤษนำเสนองาน', instructor: 'อ.รมนปวีร์ (ปก.2+ภพ.2)' },
+                    { day: 'Thursday', room: '533', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.รมนปวีร์ (จก.1)' },
+
+                    // วันศุกร์
+                    { day: 'Friday', room: '521', start: 20, end: 22, time: '20.30 - 21.30 น.', subject: 'GEL 1002', instructor: 'อ.รมนปวีร์ (ถภ.1)' },
+                    { day: 'Friday', room: '523', start: 16, end: 20, time: '16.30 - 19.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.รมนปวีร์ (นิเทศ.1 สมทบ)' },
+                    { day: 'Friday', room: '532', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.รมนปวีร์ (จท.1)' },
+                    { day: 'Friday', room: '532', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'ดร.สาธิตา (ผภ.1)' },
+                    { day: 'Friday', room: '533', start: 8, end: 12, time: '08.30 - 11.30 น.', subject: 'GEL 1004 อังกฤษบริบทสากล', instructor: 'อ.จินตนา (โลหะ.2+อน.2)' },
+                    { day: 'Friday', room: '533', start: 13, end: 17, time: '13.30 - 16.30 น.', subject: 'GEL 1002 ภาษาอังกฤษเพื่ออาชีพฯ', instructor: 'อ.รมนปวีร์ (นิเทศ.1)' }
                 ],
 
                 fetchBookings() {
@@ -353,7 +363,14 @@
                     fetch(GOOGLE_SCRIPT_URL)
                         .then(res => res.json())
                         .then(data => {
-                            this.tempBookings = data;
+                            this.tempBookings = data.map(item => {
+                                return {
+                                    ...item,
+                                    date: this.formatDateClean(item.date),
+                                    startTime: this.formatTimeClean(item.startTime),
+                                    endTime: this.formatTimeClean(item.endTime)
+                                };
+                            });
                             this.loading = false;
                             this.checkAvailability();
                         })
@@ -361,6 +378,40 @@
                             console.error(err);
                             this.loading = false;
                         });
+                },
+
+                formatDateClean(dateStr) {
+                    if (!dateStr) return '';
+                    if (dateStr.includes('GMT')) {
+                        try {
+                            const d = new Date(dateStr);
+                            if (!isNaN(d.getTime())) {
+                                const year = d.getFullYear();
+                                const month = String(d.getMonth() + 1).padStart(2, '0');
+                                const day = String(d.getDate()).padStart(2, '0');
+                                return `${year}-${month}-${day}`;
+                            }
+                        } catch (e) {}
+                    }
+                    return dateStr.split('T')[0];
+                },
+
+                formatTimeClean(timeStr) {
+                    if (!timeStr) return '';
+                    if (timeStr.includes('GMT')) {
+                        try {
+                            const d = new Date(timeStr);
+                            if (!isNaN(d.getTime())) {
+                                const hours = String(d.getHours()).padStart(2, '0');
+                                const mins = String(d.getMinutes()).padStart(2, '0');
+                                return `${hours}:${mins}`;
+                            }
+                        } catch (e) {}
+                    }
+                    if (timeStr.length >= 5) {
+                        return timeStr.substring(0, 5);
+                    }
+                    return timeStr;
                 },
 
                 getDayOfWeek(dateString) {
