@@ -204,10 +204,11 @@
                                 <td class="py-3 px-4 font-medium text-gray-800" x-text="b.requester"></td>
                                 <td class="py-3 px-4 text-gray-600" x-text="b.title"></td>
                                 <td class="py-3 px-4 text-center">
-                                    <button @click="openDeleteModal(b)" class="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors">
+                                    <button @click="openDeleteModal(b)" title="ยกเลิกการจอง" class="text-rose-500 hover:text-rose-700 px-2.5 py-1 rounded-lg hover:bg-rose-50 transition-colors text-xs font-semibold inline-flex items-center space-x-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                         </svg>
+                                        <span>ยกเลิก</span>
                                     </button>
                                 </td>
                             </tr>
@@ -225,7 +226,7 @@
 
     </main>
 
-    <!-- Delete Confirmation Modal -->
+    <!-- Cancel Confirmation Modal -->
     <div x-show="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-xs p-4" x-cloak>
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4" @click.outside="showDeleteModal = false">
             <div class="flex items-center space-x-3 text-rose-600">
@@ -234,10 +235,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                 </div>
-                <h3 class="text-lg font-bold text-gray-900">ยืนยันการลบรายการจอง</h3>
+                <h3 class="text-lg font-bold text-gray-900">ยืนยันการยกเลิกรายการจอง</h3>
             </div>
             
-            <p class="text-sm text-gray-600">คุณต้องการลบรายการจองนี้ออกจาก Google Sheets ใช่หรือไม่?</p>
+            <p class="text-sm text-gray-600">ระบบจะยกเลิกรายการจองนี้เพื่อคืนห้องว่าง (ประวัติการจองยังคงถูกบันทึกเก็บไว้ในฐานข้อมูล)</p>
             
             <div class="bg-gray-50 rounded-xl p-3.5 space-y-1.5 text-xs font-medium text-gray-700 border border-gray-200">
                 <div><span class="text-gray-400">ห้อง:</span> <span class="font-bold text-gray-900" x-text="'ห้อง ' + (selectedBookingToDelete?.room || '')"></span></div>
@@ -248,10 +249,10 @@
             </div>
 
             <div class="flex items-center justify-end space-x-3 pt-2">
-                <button @click="showDeleteModal = false" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">ยกเลิก</button>
+                <button @click="showDeleteModal = false" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">ปิดหน้าต่าง</button>
                 <button @click="confirmDelete" class="px-4 py-2 rounded-xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm" :disabled="loading">
-                    <span x-show="!loading">ลบข้อมูล</span>
-                    <span x-show="loading">กำลังลบ...</span>
+                    <span x-show="!loading">ยืนยันการยกเลิก</span>
+                    <span x-show="loading">กำลังดำเนินการ...</span>
                 </button>
             </div>
         </div>
@@ -543,7 +544,7 @@
                         this.fetchBookings();
                     })
                     .catch(err => {
-                        alert('เกิดข้อผิดพลาดในการลบข้อมูล');
+                        alert('เกิดข้อผิดพลาดในการยกเลิกข้อมูล');
                         this.loading = false;
                     });
                 },
