@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Prompt', sans-serif; }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col" x-data="classroomApp()" x-init="fetchBookings()">
@@ -176,12 +177,20 @@
             </div>
         </div>
 
-        <!-- Temporary Bookings Table -->
+        <!-- Temporary Bookings Table with Pagination -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center justify-between">
-                <span>รายการจองชั่วคราวที่ได้รับการยืนยันแล้ว</span>
-                <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-lg font-bold" x-text="tempBookings.length + ' รายการ'"></span>
-            </h2>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div class="flex items-center space-x-2">
+                    <h2 class="text-lg font-bold text-gray-900">รายการจองชั่วคราวที่ได้รับการยืนยันแล้ว</h2>
+                    <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-lg font-bold" x-text="tempBookings.length + ' รายการ'"></span>
+                </div>
+                
+                <!-- ช่องค้นหาด่วน -->
+                <div class="w-full sm:w-64">
+                    <input type="text" x-model="searchQuery" @input="currentPage = 1" placeholder="🔍 ค้นหาห้อง, วันที่, ชื่อผู้จอง..." 
+                           class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -196,7 +205,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50 text-sm">
-                        <template x-for="(b, idx) in tempBookings" :key="b.id">
+                        <template x-for="(b, idx) in paginatedBookings" :key="b.id">
                             <tr class="hover:bg-gray-50/50">
                                 <td class="py-3 px-4 font-bold text-gray-900" x-text="'ห้อง ' + b.room"></td>
                                 <td class="py-3 px-4 text-gray-600" x-text="b.date"></td>
@@ -213,14 +222,41 @@
                                 </td>
                             </tr>
                         </template>
-                        <tr x-show="tempBookings.length === 0">
+                        <tr x-show="filteredBookings.length === 0">
                             <td colspan="6" class="text-center py-8 text-gray-400 text-sm">
-                                <span x-show="!loading">ยังไม่มีรายการจองชั่วคราวในระบบ</span>
+                                <span x-show="!loading">ไม่พบรายการจองชั่วคราว</span>
                                 <span x-show="loading">กำลังโหลดข้อมูลจาก Google Sheets...</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div x-show="filteredBookings.length > 0" class="mt-4 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+                <div>
+                    แสดงรายการที่ <span class="font-bold text-gray-900" x-text="((currentPage - 1) * itemsPerPage) + 1"></span> 
+                    ถึง <span class="font-bold text-gray-900" x-text="Math.min(currentPage * itemsPerPage, filteredBookings.length)"></span> 
+                    จากทั้งหมด <span class="font-bold text-gray-900" x-text="filteredBookings.length"></span> รายการ
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <button @click="currentPage--" :disabled="currentPage <= 1"
+                            class="px-3 py-1.5 rounded-lg border font-semibold transition-colors"
+                            :class="currentPage <= 1 ? 'border-gray-100 text-gray-300 cursor-not-allowed' : 'border-gray-200 text-gray-700 hover:bg-gray-50'">
+                        ← ก่อนหน้า
+                    </button>
+                    
+                    <span class="px-2 font-semibold text-gray-800">
+                        หน้า <span x-text="currentPage"></span> / <span x-text="totalPages"></span>
+                    </span>
+                    
+                    <button @click="currentPage++" :disabled="currentPage >= totalPages"
+                            class="px-3 py-1.5 rounded-lg border font-semibold transition-colors"
+                            :class="currentPage >= totalPages ? 'border-gray-100 text-gray-300 cursor-not-allowed' : 'border-gray-200 text-gray-700 hover:bg-gray-50'">
+                        ถัดไป →
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -285,6 +321,32 @@
                 showDeleteModal: false,
                 selectedBookingToDelete: null,
                 tempBookings: [],
+                
+                // ตัวแปรสำหรับแบ่งหน้าและค้นหา
+                searchQuery: '',
+                currentPage: 1,
+                itemsPerPage: 20,
+
+                get filteredBookings() {
+                    if (!this.searchQuery.trim()) return this.tempBookings;
+                    const q = this.searchQuery.toLowerCase().trim();
+                    return this.tempBookings.filter(b => 
+                        (b.room && b.room.toLowerCase().includes(q)) ||
+                        (b.date && b.date.toLowerCase().includes(q)) ||
+                        (b.requester && b.requester.toLowerCase().includes(q)) ||
+                        (b.title && b.title.toLowerCase().includes(q))
+                    );
+                },
+
+                get totalPages() {
+                    return Math.max(1, Math.ceil(this.filteredBookings.length / this.itemsPerPage));
+                },
+
+                get paginatedBookings() {
+                    const start = (this.currentPage - 1) * this.itemsPerPage;
+                    const end = start + this.itemsPerPage;
+                    return this.filteredBookings.slice(start, end);
+                },
                 
                 masterSchedule: [
                     // วันจันทร์
@@ -366,6 +428,7 @@
                     fetch(GOOGLE_SCRIPT_URL)
                         .then(res => res.json())
                         .then(data => {
+                            // เรียงรายการล่าสุดขึ้นบนสุด (reverse)
                             this.tempBookings = data.map(item => {
                                 return {
                                     ...item,
@@ -373,7 +436,8 @@
                                     startTime: this.formatTimeClean(item.startTime),
                                     endTime: this.formatTimeClean(item.endTime)
                                 };
-                            });
+                            }).reverse();
+                            this.currentPage = 1;
                             this.loading = false;
                         })
                         .catch(err => {
